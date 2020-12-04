@@ -5,10 +5,10 @@ COPY src /src
 WORKDIR /src
 
 RUN dotnet build --configuration Release
-RUN dotnet publish -c Release -o /app/myapp
+RUN dotnet publish -c Release -o /app
 
 # final stage/image
 FROM mcr.microsoft.com/dotnet/aspnet:5.0
 WORKDIR /app
 COPY --from=build /app .
-ENTRYPOINT ["./myapp/SantaWishList"]
+ENTRYPOINT ["./SantaWishList"]
