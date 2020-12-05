@@ -1,0 +1,27 @@
+name: Build and Push ASP.Net Core app to ACR
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@main
+
+    - name: Azure Container Registry Login
+      uses: azure/docker-login@v1
+      with:
+        username: ${{ secrets.SANTAWISHLIST_ACR }}
+        password: ${{ secrets.SANTAWISHLIST_ACR_PASSWORD }}
+        login-server: ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io
+    
+    - name: Docker Build
+      run: docker build -t ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist-app:${GITHUB_SHA::7} -f build/Dockerfile .
+
+    - name: Docker Push
+      run: docker push ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist-app:${GITHUB_SHA::7}
+ 
