@@ -1,7 +1,6 @@
 resource "azurerm_frontdoor" "santawishlist" {
   name                                         = "${var.service_name}-fd"
   resource_group_name                          = azurerm_resource_group.shared.name
-  location                                     = "Global"
   enforce_backend_pools_certificate_name_check = false
 
   frontend_endpoint {

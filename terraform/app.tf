@@ -35,6 +35,9 @@ resource "azurerm_app_service" "santawishlist" {
   app_service_plan_id = azurerm_app_service_plan.santawishlist[each.key].id
 
   app_settings = {
+    "DOCKER_REGISTRY_SERVER_URL"          = "https://${azurerm_container_registry.santawishlist.login_server}"
+    "DOCKER_REGISTRY_SERVER_USERNAME"     = azurerm_container_registry.santawishlist.admin_username
+    "DOCKER_REGISTRY_SERVER_PASSWORD"     = azurerm_container_registry.santawishlist.admin_password
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "connectionString"                    = azurerm_storage_account.santawishlist[each.key].primary_connection_string
     "storageContainerName"                = "wishLists"
