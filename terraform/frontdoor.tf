@@ -1,11 +1,11 @@
 resource "azurerm_frontdoor" "santawishlist" {
-  name                                         = "${var.service_name}-fd"
+  name                                         = "${var.service_name}${random_string.santawishlist.result}"
   resource_group_name                          = azurerm_resource_group.shared.name
   enforce_backend_pools_certificate_name_check = false
 
   frontend_endpoint {
     name                              = "frontend1"
-    host_name                         = "${var.service_name}-fd.azurefd.net"
+    host_name                         = "${var.service_name}${random_string.santawishlist.result}.azurefd.net"
     custom_https_provisioning_enabled = false
   }
 
@@ -36,7 +36,7 @@ resource "azurerm_frontdoor" "santawishlist" {
   routing_rule {
     name               = "DefaultPrimary"
     accepted_protocols = ["Http", "Https"]
-    patterns_to_match  = ["/"]
+    patterns_to_match  = ["/*"]
     frontend_endpoints = ["frontend1"]
     forwarding_configuration {
       forwarding_protocol = "MatchRequest"
@@ -49,11 +49,19 @@ resource "azurerm_frontdoor" "santawishlist" {
     content {
       name               = routing_rule.value.location
       accepted_protocols = ["Http", "Https"]
-      patterns_to_match  = ["/${routing_rule.value.location}"]
+      patterns_to_match = [
+        "/${routing_rule.value.location}",
+        "/${routing_rule.value.location}/*"
+      ]
       frontend_endpoints = ["frontend1"]
-      forwarding_configuration {
-        forwarding_protocol = "MatchRequest"
-        backend_pool_name   = routing_rule.value.location
+      # Using redirection since forwarding the request won't work due to lack of websocket 
+      # support via FrontDoor. The app does switch to LongPolling (HTTP) after 60s of 
+      # loading the app, but this is not user friendly, or immediately obvious.
+      redirect_configuration {
+        custom_host       = routing_rule.value.default_site_hostname
+        custom_path       = "/"
+        redirect_protocol = "MatchRequest"
+        redirect_type     = "Moved"
       }
     }
   }

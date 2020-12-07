@@ -1,13 +1,17 @@
-name: Build and Push ASP.Net Core app to ACR
+name: Build Santawishlist App
 
 on:
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+  # Include manual trigger for simplicity of demo
   workflow_dispatch:
 
 jobs:
   build-and-push:
+    name: Build and Push image to ACR
     runs-on: ubuntu-latest
 
     steps:
@@ -21,8 +25,8 @@ jobs:
         login-server: ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io
     
     - name: Docker Build
-      run: docker build -t ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist-app:${GITHUB_SHA::7} -f build/Dockerfile .
+      run: docker build -t ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist:latest -f build/Dockerfile .
 
     - name: Docker Push
-      run: docker push ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist-app:${GITHUB_SHA::7}
+      run: docker push ${{ secrets.SANTAWISHLIST_ACR }}.azurecr.io/santawishlist:latest
  

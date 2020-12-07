@@ -5,4 +5,5 @@ resource "azurerm_storage_account" "santawishlist" {
   location                 = azurerm_resource_group.santawishlist[each.key].location
   account_tier             = "Standard"
   account_replication_type = "LRS"
+  allow_blob_public_access = true
 }
