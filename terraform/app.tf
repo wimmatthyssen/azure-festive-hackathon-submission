@@ -6,8 +6,8 @@ resource "random_string" "santawishlist" {
 
 resource "azurerm_container_registry" "santawishlist" {
   name                = "${var.service_name}${random_string.santawishlist.result}"
-  resource_group_name = azurerm_resource_group.santawishlist["westeurope"].name
-  location            = azurerm_resource_group.santawishlist["westeurope"].location
+  resource_group_name = azurerm_resource_group.shared.name
+  location            = azurerm_resource_group.shared.location
   sku                 = "Basic"
   admin_enabled       = true
   //georeplication_locations = keys(var.app_locations)

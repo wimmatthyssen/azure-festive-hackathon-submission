@@ -5,7 +5,7 @@ resource "azurerm_traffic_manager_profile" "santawishlist" {
   traffic_routing_method = "Geographic"
 
   dns_config {
-    relative_name = random_string.santawishlist.result
+    relative_name = "${var.service_name}${random_string.santawishlist.result}"
     ttl           = 100
   }
 

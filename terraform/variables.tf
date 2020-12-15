@@ -6,7 +6,7 @@ variable "service_name" {
 
 variable "primary_region" {
   type        = string
-  description = "Azure region to act as a 'Primary' region for shared resources, e.g. Front Door"
+  description = "Azure region to act as a 'Primary' region for the shared resource group."
   default     = "westeurope"
 }
 
@@ -23,7 +23,7 @@ variable "app_locations" {
   }
 }
 
-variable "github_repository" {
+/* variable "github_repository" {
   type        = string
   description = "The name of your github repository"
   default     = "azure-festive-hackathon"
@@ -33,3 +33,4 @@ variable "github_access_token" {
   type        = string
   description = "Personal access token for github"
 }
+ */
