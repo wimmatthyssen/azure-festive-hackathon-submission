@@ -1,18 +1,17 @@
 # Festive Azure Hackathon
 
-## Solution Architecture
+### Solution Architecture
 
 <p align="center">
   <img src="./img/solution-diagram.png">
 </p>
 
-## Website hosting and scaling
+### Website hosting and scaling
 The solution makes use of the Azure App Service for hosting the application. This uses a Linux App service plan with containers. Images are stored in ACR and pulled in whenever the image is updated using the continuous deployment feature. ACR is geo-replicated so that the image is highly available, with a copy local to each app service. A scale setting has been configured to satisfy the scaling requirement for the application, with _CpuPercentage_ as the scaling metric. This is configured to scale up during busy periods, and scale down when it is quieter. 
 
-## Personalisation and Data compliance
+### Personalisation and Data compliance
 An App Service is deployed into each region that is specified. Traffic Manager uses geo-mappings to identity the country that a request originates from, and then route it to the appropriate App Service. A Storage Account is deployed alongside the App Service in a region, ensuring data locality.
 
----
 ## Getting set up 🛠
 > This guide assumes you are familiar with terraform, azure-cli and Github. The steps assume that you are running them from within a bash session.
 
@@ -87,7 +86,7 @@ terraform {
 }
 ```
 7. Save the code, commit and push to the `main` branch.
----
+
 ## Creating the Infrastructure 🏗
 Our terraform and container image is deployed using Github Actions. After you push your first commit up to the branch, it will begin a workflow that will apply terraform, build the container image, and push it to ACR. Once the image is pushed to ACR, the App services are configured to pull down the latest version of the container image.
 
@@ -114,3 +113,8 @@ SP_ID=$(az ad sp list --display-name santawishlist-hackathon --query [].appId --
 az ad sp delete --id $SP_ID
 ```
 3. Delete this repository!
+
+## Lessons and Retrospective 📒
+I learnt a couple of things whilst participating in this hackathon, it was also a great refresher on Azure as it has been over a year since I last looked at it!
+
+I was going to use Azure Front Door as it seemed like the perfect match for this kind of solution. With the Rules Engine it seemed like the logical choice, as I could perform geo-matching and URL rewrites to forward traffic to the backend. However, I soon found out that it does not support Websockets, and because of this it wouldn't work properly with the Blazor app. Granted, after 60s it would default to HTTP long polling, however this is less than optimal. We could potentially configure the app to _only_ use long polling, but this was against the rules. This is when I turned to Traffic Manager, as it is just simple DNS load balancing, and as it turns out also has geo-matching capabilities!

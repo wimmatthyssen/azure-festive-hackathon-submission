@@ -5,7 +5,7 @@ resource "random_string" "main" {
 }
 
 resource "azurerm_container_registry" "main" {
-  name                     = "${var.service_name}${random_string.main.result}"
+  name                     = "${var.app_name}${random_string.main.result}"
   resource_group_name      = azurerm_resource_group.shared.name
   location                 = azurerm_resource_group.shared.location
   sku                      = "Premium"
@@ -15,7 +15,7 @@ resource "azurerm_container_registry" "main" {
 
 resource "azurerm_app_service_plan" "main" {
   for_each            = var.app_locations
-  name                = "${var.service_name}-${each.key}-asp"
+  name                = "${var.app_name}-${each.key}-asp"
   location            = azurerm_resource_group.main[each.key].location
   resource_group_name = azurerm_resource_group.main[each.key].name
   kind                = "Linux"
@@ -29,7 +29,7 @@ resource "azurerm_app_service_plan" "main" {
 
 resource "azurerm_app_service" "main" {
   for_each            = var.app_locations
-  name                = "${var.service_name}-${each.key}-app"
+  name                = "${var.app_name}-${each.key}-app"
   location            = azurerm_resource_group.main[each.key].location
   resource_group_name = azurerm_resource_group.main[each.key].name
   app_service_plan_id = azurerm_app_service_plan.main[each.key].id
@@ -45,7 +45,7 @@ resource "azurerm_app_service" "main" {
   }
 
   site_config {
-    linux_fx_version = "DOCKER|${azurerm_container_registry.main.login_server}/santawishlist:latest"
+    linux_fx_version = "DOCKER|${azurerm_container_registry.main.login_server}/${var.app_name}:latest"
   }
 }
 

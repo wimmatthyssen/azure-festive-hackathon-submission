@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - "**.tf"
+      - "src/**"
   # Include manual trigger for simplicity of demo
   workflow_dispatch:
 

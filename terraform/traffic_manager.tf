@@ -1,11 +1,11 @@
 resource "azurerm_traffic_manager_profile" "main" {
-  name                = "${var.service_name}${random_string.main.result}"
+  name                = "${var.app_name}${random_string.main.result}"
   resource_group_name = azurerm_resource_group.shared.name
 
   traffic_routing_method = "Geographic"
 
   dns_config {
-    relative_name = "${var.service_name}${random_string.main.result}"
+    relative_name = "${var.app_name}${random_string.main.result}"
     ttl           = 100
   }
 

@@ -1,6 +1,6 @@
-variable "service_name" {
+variable "app_name" {
   type        = string
-  description = "Generic service name"
+  description = "Application name"
   default     = "santawishlist"
 }
 
