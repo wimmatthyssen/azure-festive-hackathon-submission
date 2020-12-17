@@ -26,5 +26,5 @@ resource "azurerm_traffic_manager_endpoint" "santawishlist" {
   profile_name        = azurerm_traffic_manager_profile.santawishlist.name
   target_resource_id  = azurerm_app_service.santawishlist[each.key].id
   type                = "azureEndpoints"
-  geo_mappings        = [each.value.country_code]
+  geo_mappings        = each.value.country_codes
 }

@@ -10,6 +10,7 @@
 
 **/.DS_Store
 **/.env
+**/.vscode/*
 
 # User-specific files
 *.rsuser

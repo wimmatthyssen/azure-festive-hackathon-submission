@@ -1,11 +1,11 @@
 
-name: Destroy environmnet
+name: Destroy environment
 
 on:
   workflow_dispatch:
 
 jobs:
-  plan-terraform:
+  terraform-destroy:
     runs-on: ubuntu-latest
 
     env:

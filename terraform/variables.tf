@@ -15,22 +15,13 @@ variable "app_locations" {
   description = "Configuration map for each app deployment."
   default = {
     westeurope = {
-      country_code = "NL"
+      country_codes = ["NL"]
+    },
+    northeurope = {
+      country_codes = ["IE"]
     },
     uksouth = {
-      country_code = "GB"
+      country_codes = ["GB"]
     }
   }
 }
-
-/* variable "github_repository" {
-  type        = string
-  description = "The name of your github repository"
-  default     = "azure-festive-hackathon"
-}
-
-variable "github_access_token" {
-  type        = string
-  description = "Personal access token for github"
-}
- */
