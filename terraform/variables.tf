@@ -6,7 +6,7 @@ variable "service_name" {
 
 variable "primary_region" {
   type        = string
-  description = "Azure region to act as a 'Primary' region for the shared resource group."
+  description = "Azure region to act as a 'Primary' region for the shared resource group. This will contain the Traffic Manager and Azure Container Registry."
   default     = "westeurope"
 }
 
