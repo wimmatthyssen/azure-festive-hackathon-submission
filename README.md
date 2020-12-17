@@ -52,7 +52,7 @@ echo $STORAGE_ACCOUNT
 ```
 
 
-5. Update the terraform map variable `app_locations` in the `variables.tf` file to include each region you want to deploy to. For example, if I want to deploy to the _West Europe_ and _UK South_ regions, it would look like the following:
+5. Update the terraform map variable `app_locations` in the `variables.tf` file to include each region you want to deploy to. For example, if I want to deploy to the _West Europe_, _North Europe_ and _UK South_ regions, it would look like the following:
 ```
 variable "app_locations" {
   type        = map
